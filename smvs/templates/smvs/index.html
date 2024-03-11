@@ -1,0 +1,29 @@
+{% extends "smvs/layout.html"%}
+
+{% block body %}
+{% if user.is_authenticated and user.is_superuser %}
+    <!-- Content available to superusers -->
+    <a href="{% url 'createCandidate' %}">
+        <input id="createElectionButton" class="btn btn-primary" type="button" value="Create Election">
+    </a>           
+{% endif %}
+
+<div>
+    {% if user.is_authenticated %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <input autofocus class="form-control" type="text" name="code" placeholder="Enter Election Code">
+                <input class="btn btn-primary" type="submit" value="Join Election">
+            </div>
+        </form>
+    </div>
+    {% else %}
+        <!-- Content for non-authenticated users -->
+        <p>Stay connected and collaborate with friends, family, and colleagues no matter where you are.</p>
+        <form method="get" action="{% url 'login' %}">
+            <button type="submit" class="btn btn-primary">Log In</button>
+        </form>
+    {% endif %}
+
+{% endblock %}

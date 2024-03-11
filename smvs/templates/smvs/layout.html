@@ -1,0 +1,39 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Index</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="{% static 'smvs/index.js' %}"></script>
+  </head>
+  <body>
+    <div class="left">
+      <img src="{% static 'smvs/logo.png' %}" alt="Clouds">
+    </div>
+    <header>
+      <nav>
+        <ul>
+          {% if user.is_authenticated%}
+            Signed in as <strong>{{ user.username }}</strong>
+          {% else %}
+            Not Signed in
+          {% endif %}
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">How It Works</a></li>
+          <li><a href="#">Contact Us</a></li>
+          {% if user.is_authenticated %}
+            <li><a href="{% url 'logout'%}">Sign Out</a></li>
+          {% else %}
+            <li><a href="{% url 'login'%}">Log In</a></li>
+            <li><a href="{% url 'register'%}">Register</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </header>
+    {% block body %}
+    {% endblock %}
+  </body>
+</html>
