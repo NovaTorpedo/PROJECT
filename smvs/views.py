@@ -26,7 +26,7 @@ def login_view(request):
             return HttpResponseRedirect(reverse('index'))
         else:
             return render(request, "smvs/login.html", {
-                "message": "Invalid username/password."
+                "message": "Invalid username or password!"
             })
     else:
         return render(request, "smvs/login.html")

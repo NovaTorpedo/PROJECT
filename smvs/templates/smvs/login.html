@@ -18,7 +18,7 @@
     <div>
         <h1>LOGIN TO VOTE</h1>
         {% if message %}
-            <div>{{ message }}</div>
+            <div><h2 style="color: red; font-size: 20px;">{{ message }}</h2></div>
         {% endif %}
         <form action="{% url 'login' %}" method="post">
             {% csrf_token %}

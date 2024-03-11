@@ -7,7 +7,7 @@
     {% csrf_token %}
     <div>
         <label for="id_position">Position:</label>
-        <input type="text" name="position" id="id_position">
+        <input type="text" name="position" id="id_position" required>
     </div>
     <div>
         <label>Candidates:</label>
@@ -20,11 +20,11 @@
     </div>    
     <div>
         <label for="id_startDateTime">Start Date and Time:</label>
-        <input type="datetime-local" name="startDateTime" id="id_startDateTime">
+        <input type="datetime-local" name="startDateTime" id="id_startDateTime" required>
     </div>
     <div>
         <label for="id_endDateTime">End Date and Time:</label>
-        <input type="datetime-local" name="endDateTime" id="id_endDateTime">
+        <input type="datetime-local" name="endDateTime" id="id_endDateTime" required>
     </div>
     <input type="hidden" value="{{ election.id }}" name="election_id">
     <input type="submit" value="Submit">
