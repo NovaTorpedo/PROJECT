@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -76,12 +77,8 @@ WSGI_APPLICATION = 'PROJECT.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'smvs',
-        'USER': 'root',
-        'PASSWORD': '2017',
-        'HOST': 'localhost',  # or the hostname where your MySQL server is running
-        'PORT': '3306',      # or the port on which your MySQL server is listening
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
