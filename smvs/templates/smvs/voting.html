@@ -2,6 +2,114 @@
 
 {% block body %}
 
-TODO
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Profile</h4>
+                </div>
+                <div class="card-body">
+                    <img src="C:/Users/HP/Downloads/candidate.jpg" alt="Candidate Profile Photo" width="60%" />
+                    <p class="card-text">
+                        <strong>Name:</strong> <span id="voter-name"></span>
+                    </p>
+                    <p class="card-text">
+                        <strong>Age:</strong> <span id="voter-age"></span>
+                    </p>
+                    <p class="card-text">
+                        <strong>Voter ID:</strong> <span id="voter-id"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Candidates</h4>
+                </div>
+                <div class="card-body">
+                    <div id="candidate-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+    }
+</style>
+<script>
+    // Voter details (replace with actual data)
+  
+    // Candidates (replace with actual data)
+    
+    // Populate voter details
+    document.getElementById("voter-name").textContent = voterName;
+    document.getElementById("voter-age").textContent = voterAge;
+    document.getElementById("voter-id").textContent = voterId;
+
+    // Populate candidate list
+    const candidateList = document.getElementById("candidate-list");
+    candidates.forEach(candidate => {
+        const candidateCard = document.createElement("div");
+        candidateCard.classList.add("card", "mb-3");
+
+        const candidateCardBody = document.createElement("div");
+        candidateCardBody.classList.add("card-body");
+
+        const row = document.createElement("div");
+        row.classList.add("row");
+
+        const colImage = document.createElement("div");
+        colImage.classList.add("col-md-3");
+
+        const candidateImage = document.createElement("img");
+        candidateImage.src = candidate.image;
+        candidateImage.alt = `${candidate.name} Profile Photo`;
+        candidateImage.classList.add("img-fluid", "rounded-circle");
+        colImage.appendChild(candidateImage);
+
+        const colDetails = document.createElement("div");
+        colDetails.classList.add("col-md-9");
+
+        const candidateName = document.createElement("h5");
+        candidateName.classList.add("card-title");
+        candidateName.textContent = candidate.name;
+
+        const candidateAge = document.createElement("p");
+        candidateAge.classList.add("card-text");
+        candidateAge.textContent = `Age: ${candidate.age}`;
+
+        const candidateDescription = document.createElement("p");
+        candidateDescription.classList.add("card-text");
+        candidateDescription.textContent = candidate.description;
+
+        const voteButton = document.createElement("button");
+        voteButton.classList.add("btn", "btn-primary");
+        voteButton.textContent = "Vote";
+        voteButton.addEventListener("click", () => {
+            alert(`You voted for ${candidate.name}`);
+            voteButton.disabled = true;
+            const otherButtons = document.querySelectorAll(".btn-primary:not(:disabled)");
+            otherButtons.forEach(button => button.disabled = true);
+        });
+
+        colDetails.appendChild(candidateName);
+        colDetails.appendChild(candidateAge);
+        colDetails.appendChild(candidateDescription);
+        colDetails.appendChild(voteButton);
+
+        row.appendChild(colImage);
+        row.appendChild(colDetails);
+
+        candidateCardBody.appendChild(row);
+        candidateCard.appendChild(candidateCardBody);
+
+        candidateList.appendChild(candidateCard);
+    });
+</script>
 
 {% endblock %}
