@@ -110,8 +110,34 @@ def createElection(request):
         "candidates": candidates  # Pass candidates queryset to the template context
     })
 
+from django.db.models import Count, Q
+
 def vote(request, election_id):
-    elections = Election.objects.filter(id = election_id)
-    return render(request,"smvs/voting.html",{
-        "elections": elections
+    user = request.user
+    elections = Election.objects.filter(id=election_id)
+
+    try:
+        # Retrieve the election associated with the provided election_id
+        election = Election.objects.get(id=election_id)
+
+        # Get all candidates for the election
+        candidates = election.candidates.all()
+
+        # Create a dictionary to store candidate names and their total votes
+        candidate_votes = {}
+
+        # Calculate the total votes for each candidate
+        for candidate in candidates:
+            total_votes_for_candidate = Votes.objects.filter(candidate=candidate, election__id=election_id).count()
+            candidate_votes[candidate.full_name()] = total_votes_for_candidate
+    except Election.DoesNotExist:
+        # If the election doesn't exist, set candidates to an empty list
+        candidates = []
+        candidate_votes = {}
+
+
+    return render(request, "smvs/voting.html", {
+        "elections": elections,
+        "candidate": candidate,
+        "votes": candidate_votes
     })
