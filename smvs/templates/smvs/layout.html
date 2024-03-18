@@ -1,39 +1,136 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Index</title>
+<head>
+    <title>Welcome to Our Voting Platform</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="{% static 'smvs/index.js' %}"></script>
-  </head>
-  <body>
-    <div class="left">
-      <img src="{% static 'smvs/logo.png' %}" alt="Clouds">
-    </div>
-    <header>
-      <nav>
-        <ul>
-          {% if user.is_authenticated%}
-            Signed in as <strong>{{ user.username }}</strong>
-          {% else %}
-            Not Signed in
-          {% endif %}
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">How It Works</a></li>
-          <li><a href="#">Contact Us</a></li>
-          {% if user.is_authenticated %}
-            <li><a href="{% url 'logout'%}">Sign Out</a></li>
-          {% else %}
-            <li><a href="{% url 'login'%}">Log In</a></li>
-            <li><a href="{% url 'register'%}">Register</a></li>
-          {% endif %}
-        </ul>
-      </nav>
+    <style>
+        .hero {
+            background-image: url('{% static 'smvs/logo.png' %}');
+            background-size: cover;
+            background-position: center;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .features {
+            padding: 50px 0;
+            background-color: #f5f5f5;
+        }
+
+        .features h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .features .feature-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar navbar-expand-md navbar-dark bg-secondary">
+        <i class="fa fa-home"></i>
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img id="logo" src="{% static 'smvs/logo.png' %}" alt="Voting Logo" class="rounded img-fluid" height="50px" width="50px">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <nav class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a href="#" class="nav-link">Blog</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">How It Works</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Contact Us</a></li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        Signed in as <strong class="navbar-text mr-3">{{ user.username }}</strong>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <strong class="navbar-text mr-3"> Not Signed in </strong>
+                    </li>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                    <li class="nav-item"><a href="{% url 'logout'%}" class="nav-link bg-danger">Sign Out</a></li>
+                    {% else %}
+                    <li class="nav-item"><a href="{% url 'login'%}" class="nav-link bg-success">Log In</a></li>
+                    <li class="nav-item"><a href="{% url 'register'%}" class="nav-link">Register</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
     </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Make Your Voice Heard</h1>
+            <p>Welcome to our secure and transparent voting platform, where every vote counts. Join us in shaping the future through democratic participation.</p>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2>Why Choose Our Platform?</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <h3>Secure and Transparent</h3>
+                        <p>Our platform uses advanced security measures and blockchain technology to ensure the integrity and transparency of every vote.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <h3>User-Friendly Interface</h3>
+                        <p>Our intuitive interface makes voting a breeze, allowing you to cast your vote with ease and confidence.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <h3>Accessible Anywhere</h3>
+                        <p>Vote from the comfort of your home or on-the-go with our mobile-friendly platform, available across devices.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     {% block body %}
     {% endblock %}
-  </body>
+</body>
+
+{% block footer %}
+<footer class="bg-secondary text-white py-4">
+    <div class="container text-center">
+        All rights reserved &copy; {% now "Y" %}
+    </div>
+</footer>
+{% endblock %}
 </html>
