@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'PROJECT.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'smvs',
+        'NAME': 'sms',
         'USER': 'root',
         'PASSWORD': '2017',
         'HOST': 'localhost',  # or the hostname where your MySQL server is running
