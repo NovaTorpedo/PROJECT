@@ -111,4 +111,7 @@ def createElection(request):
     })
 
 def vote(request, election_id):
-    return render(request,"smvs/voting.html")
+    elections = Election.objects.filter(id = election_id)
+    return render(request,"smvs/voting.html",{
+        "elections": elections
+    })
