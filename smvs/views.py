@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import User, Election, Candidate, Votes
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -126,18 +126,74 @@ def vote(request, election_id):
         # Create a dictionary to store candidate names and their total votes
         candidate_votes = {}
 
-        # Calculate the total votes for each candidate
+        # Create a dictionary to store user details who voted for each candidate
+        user_votes = {}
+
+        # Calculate the total votes for each candidate and store user details
         for candidate in candidates:
-            total_votes_for_candidate = Votes.objects.filter(candidate=candidate, election__id=election_id).count()
+            votes_for_candidate = Votes.objects.filter(candidate=candidate, election__id=election_id)
+            total_votes_for_candidate = votes_for_candidate.count()
             candidate_votes[candidate.full_name()] = total_votes_for_candidate
+
+            # Store usernames of users who voted for this candidate
+            user_votes[candidate.full_name()] = [vote.user.username for vote in votes_for_candidate]
     except Election.DoesNotExist:
         # If the election doesn't exist, set candidates to an empty list
         candidates = []
         candidate_votes = {}
+        user_votes = {}
 
+    try:
+        # Retrieve the election associated with the provided election_id
+        election = Election.objects.get(id=election_id)
+
+        # Get all votes for this election
+        votes_for_election = Votes.objects.filter(election=election)
+
+        # Get the id of users who voted
+        participating_users = [vote.user.id for vote in votes_for_election]
+    except Election.DoesNotExist:
+        # If the election doesn't exist, set participating_users to an empty list
+        participating_users = []
 
     return render(request, "smvs/voting.html", {
         "elections": elections,
-        "candidate": candidate,
-        "votes": candidate_votes
+        "candidates": candidates,
+        "votes": candidate_votes,
+        "user_votes": participating_users
     })
+
+def vote_submit(request):
+    if request.method == 'POST':
+        # Get the candidate ID from the form submission
+        candidate_id = request.POST.get('candidate_id')
+
+        try:
+            # Retrieve the candidate based on the candidate_id
+            candidate = Candidate.objects.get(id=candidate_id)
+
+            # Create a vote record for the user and candidate
+            vote, created = Votes.objects.get_or_create(user=request.user, candidate=candidate, election=candidate.elections.first())
+
+            if created:
+                # Vote was successfully recorded
+                return redirect('voting', election_id=candidate.elections.first().id)  # Redirect to a success page
+            else:
+                # User has already voted for this candidate
+                return redirect('voting', election_id=candidate.elections.first().id)  # Redirect to a failure page
+        except Candidate.DoesNotExist:
+            # Candidate not found
+            return redirect('voting', election_id=candidate.elections.first().id)  # Redirect to a failure page
+    else:
+        # Invalid request method
+        return HttpResponseBadRequest("Invalid request method")
+    
+def join_election(request):
+    if request.method == 'POST':
+        # Get the election ID from the form submission
+        election_id = request.POST.get('code')
+
+        return HttpResponseRedirect(reverse(vote, kwargs={"election_id":election_id}))
+    else:
+        # Invalid request method
+        return render(request, 'index.html')

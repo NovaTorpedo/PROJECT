@@ -19,10 +19,23 @@
                                 <p class="card-text">
                                     <strong>Party: {{ candidate.party_affiliation }}</strong> <span id="voter-age"></span>
                                 </p>
-                                <p class="card-text">
-                                    <strong>Votes: {{ votes }}</strong> <span id="voter-age"></span>
-                                </p>
+                                {% if user.id not in user_votes  %}
+                                        <form action="{% url 'vote_submit' %}" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="candidate_id" value="{{ candidate.id }}">
+                                            <input class="btn btn-primary" id="submitbutton" type="submit" value="Vote">
+                                        </form>
+                                    {% else %}
+                                        <h3>You have already Voted</h3>
+                                {% endif %}
                             {% endfor %}
+                            <p class="card-text">
+                                <strong>Votes: {{ votes }}</strong> <span id="voter-age"></span>
+                            </p>
+                            <form action="{%url 'index'%}">
+                                {% csrf_token %}
+                                <input type="submit" value="Home">
+                            </form>
                         </div>
                     </div>
                 </div>

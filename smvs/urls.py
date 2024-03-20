@@ -10,4 +10,6 @@ urlpatterns = [
     path("create_election",views.createElection, name="createElection"),
     path("create_candidate",views.createCandidate, name="createCandidate"),
     path('voting/<uuid:election_id>/', views.vote, name='voting'),
+    path('votesubmit', views.vote_submit, name='vote_submit'),
+    path('joinelection', views.join_election, name='join_election'),
 ]

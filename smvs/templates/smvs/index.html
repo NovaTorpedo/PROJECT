@@ -10,7 +10,7 @@
 
 <div>
     {% if user.is_authenticated %}
-        <form method="post">
+        <form action="{% url 'join_election' %}" method="post">
             {% csrf_token %}
             <div class="form-group">
                 <input autofocus class="form-control" type="text" name="code" placeholder="Enter Election Code">
