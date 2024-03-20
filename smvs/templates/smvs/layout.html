@@ -6,39 +6,59 @@
     <title>Index</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="{% static 'smvs/index.js' %}"></script>
     
   </head>
   <body>
-    <div class="left">
-      <img src="{% static 'smvs/logo.png' %}" alt="Clouds">
+    <style>
+    </style>
+    <div class="">
     </div>
-    <header>
-      <nav>
-        <ul>
+    <header class="navbar navbar-expand-md navbar-dark bg-secondary">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                
+                <img id="logo" src="{% static 'smvs/logo.png' %}" alt="Voting Logo" class="rounded img-fluid" height="50px" width="50px">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+      <nav class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a href="#" class="nav-link">Blog</a></li>
+          <li class="nav-item"><a href="#" class="nav-link">How It Works</a></li>
+          <li class="nav-item"><a href="#" class="nav-link">Contact Us</a></li>
+
           {% if user.is_authenticated%}
-            Signed in as <strong>{{ user.username }}</strong>
-          {% else %}
+          <li class="nav-item">
+          Signed in as <strong class="navbar-text mr-3">{{ user.username }}</strong>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <strong class="navbar-text mr-3">
             Not Signed in
           {% endif %}
-          <header class="header">
-            <nav class="navbar">
-              <li><a href="#">Blog</a></li>
-              <li><a href="#">How It Works</a></li>
-              <li><a href="#">Contact Us</a></li>
-              {% if user.is_authenticated %}
-              <li><a href="{% url 'logout'%}">Sign Out</a></li>
-              {% else %}
-              <li><a href="{% url 'login'%}">Log In</a></li>
-              <li><a href="{% url 'register'%}">Register</a></li>
-              {% endif %}
-            </nav>
-          </header>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">How It Works</a></li>
+          <li><a href="#">Contact Us</a></li>
+          {% if user.is_authenticated %}
+            <li><a href="{% url 'logout'%}">Sign Out</a></li>
+          {% else %}
+            <li><a href="{% url 'login'%}">Log In</a></li>
+            <li><a href="{% url 'register'%}">Register</a></li>
+          {% endif %}
         </ul>
       </nav>
     </header>
     {% block body %}
     {% endblock %}
+  
   </body>
+  {% block footer %}
+  <footer class="bg-warning mt-5">
+    All rights reserved
+  </footer>
+  {% endblock %}
 </html>
