@@ -1,11 +1,28 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 import uuid
-
+import random
 
 # Create your models here.
 class User(AbstractUser):
     pass
+
+
+class OTPModel(models.Model):
+    otp = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.otp
+
+    @classmethod
+    def generate_otp(cls):
+        otp = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+        otp_obj = cls(otp=otp)
+        otp_obj.save()
+        return otp_obj
+        
+        
 
 class Election(models.Model):
     position = models.CharField(max_length=255)
