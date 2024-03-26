@@ -33,15 +33,16 @@
                                 {% else %}
                                     <h3>You have already Voted</h3>
                                 {% endif %}
-                                <p class="card-text d-flex justify-content-center">
-                                    <strong>Votes: {{ votes}}</strong>
-                                </p>
+                                
                             </div>
                             </div>
                         </div>
                     </div>
                 {% endfor %}
             </div>
+            <p class="card-text d-flex justify-content-center">
+                <strong>Votes: {{ votes}}</strong>
+            </p>
         </div>
         <style>
             body {
