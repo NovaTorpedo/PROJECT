@@ -1,10 +1,10 @@
 function loadForms() {
-    var numCandidates = document.getElementById('id_num_candidates').value;
-    var formContainer = document.getElementById('form-container');
-    formContainer.innerHTML = ''; // Clear previous forms
+  var numCandidates = document.getElementById("id_num_candidates").value;
+  var formContainer = document.getElementById("form-container");
+  formContainer.innerHTML = ""; // Clear previous forms
 
-    for (var i = 0; i < numCandidates; i++) {
-        var form = `
+  for (var i = 0; i < numCandidates; i++) {
+    var form = `
             <form method="post" action="{% url 'createCandidate' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div>
@@ -38,6 +38,27 @@ function loadForms() {
                 <input type="submit" value="Submit">
             </form>
         `;
-        formContainer.innerHTML += form;
-    }
+    formContainer.innerHTML += form;
+  }
 }
+
+const otpInputs = document.querySelectorAll(".otp-input");
+
+otpInputs.forEach((input, index) => {
+  input.addEventListener("input", () => {
+    if (input.value) {
+      if (index === otpInputs.length - 1) {
+        // Reached the last input field, submit the form
+        document.querySelector("form").submit();
+      } else {
+        // Move focus to the next input field
+        otpInputs[index + 1].focus();
+      }
+    } else {
+      // Move focus to the previous input field if the current one is empty
+      if (index !== 0) {
+        otpInputs[index - 1].focus();
+      }
+    }
+  });
+});

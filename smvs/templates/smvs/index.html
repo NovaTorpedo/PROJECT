@@ -1,11 +1,22 @@
-{% extends "smvs/layout.html"%}
+{% extends "smvs/layout.html" %}
 {% load static %}
 {% block body %}
 {% if user.is_authenticated and user.is_superuser %}
-<!-- Content available to superusers -->
-<a href="{% url 'createCandidate' %}">
-    <input id="createElectionButton" class="btn btn-primary btn-lg rounded-pill px-4" type="button" value="Create Election">
-</a>
+    <!-- Content available to superusers -->
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-auto mt-4">
+                <a href="{% url 'createElection' %}">
+                    <input id="createElectionButton" class="btn btn-primary btn-lg rounded-pill px-4" type="button" value="Create Election">
+                </a>
+            </div>
+            <div class="col-auto mt-4">
+                <a href="{% url 'createCandidate' %}">
+                    <input id="createCandidate" class="btn btn-primary btn-lg rounded-pill px-4" type="button" value="Create Candidates">
+                </a>
+            </div>
+        </div>
+    </div>
 {% endif %}
 <style>
     .carousel {
@@ -64,24 +75,30 @@
     </div>
 </div>
 
+
 <div class="hero-section">
     {% if user.is_authenticated %}
-    <form method="post" class="text-center">
-        {% csrf_token %}
-        <div class="form-group">
-            <input autofocus class="form-control form-control-lg" type="text" name="code" placeholder="Enter Election Code">
-            <input class="btn btn-primary btn-lg mt-3" type="submit" value="Join Election">
-        </div>
-    </form>
-    {% else %}
-    <!-- Content for non-authenticated users -->
-    <div>
-        <h1>Make Your Vote Count</h1>
-        <p>Stay connected and collaborate with friends, family, and colleagues no matter where you are.</p>
-        <form method="get" action="{% url 'login' %}">
-            <button type="submit" class="btn btn-primary btn-lg rounded-pill px-4">Log In</button>
+        <form action="{% url 'join_election' %}" method="post" class="text-center">
+            {% csrf_token %}
+            <div class="form-group">
+                <input autofocus class="form-control" type="text" name="code" placeholder="Enter Election Code">
+                <input class="btn btn-primary mt-3" type="submit" value="Join Election">
+                <a href="{% url 'voting_statistics' %}">
+                    <input id="stats" class="btn btn-primary mt-3 rounded-pill px-4" type="button" value="View Statistics">
+                </a>
+            </div>
         </form>
-    </div>
+    {% else %}
+        <!-- Content for non-authenticated users -->
+        <div>
+            <h1>Make Your Vote Count</h1>
+           
+            <p>Stay connected and collaborate with friends, family, and colleagues no matter where you are.</p>
+            <form method="get" action="{% url 'login' %}">
+                <button type="submit" class="btn btn-primary btn-lg rounded-pill px-4">Log In</button>
+            </form>
+            
+        </div>
     {% endif %}
 </div>
 {% endblock %}

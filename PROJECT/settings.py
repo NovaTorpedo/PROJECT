@@ -75,16 +75,25 @@ WSGI_APPLICATION = 'PROJECT.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'smvs',
+#         'USER': 'root',
+#         'PASSWORD': 'Moracha',
+#         'HOST': 'localhost',  # or the hostname where your MySQL server is running
+#         'PORT': '',      # or the port on which your MySQL server is listening
+#     }
+# }
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'database name',
-        'USER': 'root',
-        'PASSWORD': 'database password',
-        'HOST': 'localhost',  # or the hostname where your MySQL server is running
-        'PORT': '',      # or the port on which your MySQL server is listening
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 AUTH_USER_MODEL = 'smvs.User'
 

@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OTP Verification</title>
+    
+  </head>
+  <body>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: gray;
+    }
+    
+    .container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    .otp-input-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    
+    .otp-input {
+        width: 40px;
+        height: 40px;
+        font-size: 24px;
+        text-align: center;
+        margin: 0 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    .success {
+        color: green;
+    }
+    
+    .error {
+        color: red;
+    }
+    </style>
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="container mt-4">
+      <h1 class="bg-success">OTP Verification</h1>
+      <form method="post">
+        {% csrf_token %}
+        <div class="otp-input-container">
+          {% for _ in '------' %}
+            <input type="text" class="otp-input" name="otp" maxlength="1" required>
+          {% endfor %}
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+      <div>
+        <p class="w3-text-red"> For Testing purposes , you can use the following OTP:<br/>
+          Since we don't have an SMTP server.
+        </p>
+
+      <P>Your otp is:{{your_otp}}</p>
+      </div>
+    </div>
+
+    <script src="{% static 'smvs/index.js' %}"></script>
+  </body>
+</html>

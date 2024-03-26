@@ -2,44 +2,49 @@
 
 {% block body %}
 
-{% if candidates.count > 0 %}
-<form method="POST" action="{% url 'createElection' %}" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div>
-        <label for="id_position">Position:</label>
-        <input type="text" name="position" id="id_position" required>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            {% if candidates.count > 0 %}
+            <a href="{% url 'index' %}" class="btn btn-secondary mb-4">
+                <i class="fa fa-arrow-left"></i> Back
+            </a>
+            <form method="POST" action="{% url 'createElection' %}" enctype="multipart/form-data" class="card w3-card-4 ">
+                {% csrf_token %}
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="id_position">Position:</label>
+                        <input type="text" name="position" id="id_position" required class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Candidates:</label>
+                        <br>
+                        {% for candidate in candidates %}
+                            <div class="form-check">
+                                <input type="checkbox" name="candidates" value="{{ candidate.pk }}" class="form-check-input" id="id_candidate_{{ candidate.pk }}">
+                                <label class="form-check-label" for="id_candidate_{{ candidate.pk }}">{{ candidate.first_name }} {{ candidate.middle_name }} {{ candidate.last_name }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>    
+                    <div class="form-group">
+                        <label for="id_startDateTime">Start Date and Time:</label>
+                        <input type="datetime-local" name="startDateTime" id="id_startDateTime" required class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_endDateTime">End Date and Time:</label>
+                        <input type="datetime-local" name="endDateTime" id="id_endDateTime" required class="form-control">
+                    </div>
+                    <input type="hidden" value="{{ election.id }}" name="election_id">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+            <a href="{% url 'createCandidate' %}" class="btn btn-info mt-3">Add Candidate</a>
+            {% else %}
+            <h1>You have not created any candidates to add to an Election</h1>
+            <a href="{% url 'createCandidate' %}" class="btn btn-info mt-3">Add Candidates</a>
+            {% endif %}
+        </div>
     </div>
-    <div>
-        <label>Candidates:</label>
-        <br>
-        {% for candidate in candidates %}
-            <input type="checkbox" name="candidates" value="{{ candidate.pk }}">
-            <label for="id_candidate_{{ candidate.pk }}">{{ candidate.first_name }} {{ candidate.middle_name }} {{ candidate.last_name }}</label>
-            <br>
-        {% endfor %}
-    </div>    
-    <div>
-        <label for="id_startDateTime">Start Date and Time:</label>
-        <input type="datetime-local" name="startDateTime" id="id_startDateTime" required>
-    </div>
-    <div>
-        <label for="id_endDateTime">End Date and Time:</label>
-        <input type="datetime-local" name="endDateTime" id="id_endDateTime" required>
-    </div>
-    <input type="hidden" value="{{ election.id }}" name="election_id">
-    <input type="submit" value="Submit">
-</form>
-
-
-    <a href="{% url 'createCandidate' %}">
-        <input id="createElectionButton" class="btn btn-primary" type="button" value="Add Candidate">
-    </a> 
-
-{% else %}
-    <h1>You have not created any candidates to add to an Election</h1>
-    <a href="{% url 'createCandidate' %}">
-        <input id="createElectionButton" class="btn btn-primary" type="button" value="Add Candidates">
-    </a>  
-{% endif %}
+</div>
 
 {% endblock %}
