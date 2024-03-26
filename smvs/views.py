@@ -1,13 +1,17 @@
 from django.shortcuts import render
-from .models import User, Election, Candidate, Votes
+from .models import User, Election, Candidate, Votes, OTPModel
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import create_candidate, create_election
+from django.shortcuts import render, redirect
+from django.utils import timezone
+from django.contrib import messages
+from django.template import loader
 
 # Create your views here.
 def index(request):
@@ -18,18 +22,50 @@ def login_view(request):
         # Attempt to sign the user in
         username = request.POST['username']
         password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
+        global user_b4_otp 
+        user_b4_otp = authenticate(request, username=username, password=password)
 
         # Check if authentication is successful
-        if user is not None:
-            login(request, user)
-            return HttpResponseRedirect(reverse('index'))
+        if user_b4_otp is not None:
+            # login(request, user)
+            otp_obj = OTPModel.generate_otp()
+            global your_otp 
+            your_otp = otp_obj.otp
+            print(f' Your OTP is: {your_otp}')  # For development, print OTP to the console
+            request.session['otp_id'] = otp_obj.id        
+            return redirect('otp_verify')
+            # login(request, user_b4_otp)
+            # return HttpResponseRedirect(reverse('index'))
         else:
             return render(request, "smvs/login.html", {
                 "message": "Invalid username or password!"
             })
     else:
         return render(request, "smvs/login.html")
+
+
+
+def otp_verify_view(request):
+    if request.method == 'POST':
+        otp = request.POST.getlist('otp')
+        otp_str=''
+        for i in otp:
+            otp_str +=i
+        otp=int(otp_str)
+        otp_id = request.session.get('otp_id')
+        otp_obj = OTPModel.objects.filter(id=otp_id, otp=otp).first()
+        if otp_obj:
+            otp_obj.delete()
+            login(request, user_b4_otp)
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            messages.error(request, 'Invalid OTP or OTP expired.')
+    context = {
+        'your_otp': your_otp,
+    }
+    return render(request, 'smvs/otp_verify.html', context)
+
+
 
 def logout_view(request):
     logout(request)
@@ -56,8 +92,8 @@ def register(request):
                 "message": "Username already taken."
             })
         
-        login(request, user)
-        return HttpResponseRedirect(reverse("index"))
+        #login(request, user)
+        return redirect(reverse("login"))
     else:
         return render(request, "smvs/register.html")
 
@@ -197,3 +233,16 @@ def join_election(request):
     else:
         # Invalid request method
         return render(request, 'index.html')
+
+
+
+        from django.db.models import Count
+
+def voting_statistics(request):
+    elections = Election.objects.annotate(total_votes=Count('votes')).order_by('-total_votes')
+
+    for election in elections:
+        candidates = election.candidates.annotate(candidate_votes=Count('votes')).order_by('-candidate_votes')
+        election.candidate_data = candidates
+
+    return render(request, 'smvs/voting_statistics.html', {'elections': elections})
