@@ -54,3 +54,60 @@
         {% endfor %}
     </script>
 {% endblock %}
+
+{% extends 'smvs/layout.html' %}
+{% load static %}
+
+
+{% block body %}
+    {% for election in elections %}
+    <style>
+        .election-heading {
+            font-size: 24px;
+            color: #007bff;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .total-votes {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <h2 class="election-heading">{{ election.position }} Voting Statistics</h2>
+                    <p class="total-votes">Total Votes: {{ election.total_votes }}</p>
+                    <canvas id="myChart{{ forloop.counter }}" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <script>
+        {% for election in elections %}
+            var ctx{{ forloop.counter }} = document.getElementById('myChart{{ forloop.counter }}').getContext('2d');
+            var myChart{{ forloop.counter }} = new Chart(ctx{{ forloop.counter }}, {
+                type: 'bar',
+                data: {
+                    labels: [{% for candidate in election.candidate_data %}"{{ candidate.full_name }}", {% endfor %}],
+                    datasets: [{
+                        label: 'Votes',
+                        data: [{% for candidate in election.candidate_data %}{{ candidate.candidate_votes }}, {% endfor %}],
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        {% endfor %}
+    </script>
+{% endblock %}
