@@ -3,7 +3,7 @@ from .models import User, Election, Candidate, Votes, OTPModel
 from .models import User, Election, Candidate, Votes, OTPModel
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -29,20 +29,9 @@ def login_view(request):
         password = request.POST['password']
         global user_b4_otp 
         user_b4_otp = authenticate(request, username=username, password=password)
-        global user_b4_otp 
-        user_b4_otp = authenticate(request, username=username, password=password)
-
+       
         # Check if authentication is successful
-        if user_b4_otp is not None:
-            # login(request, user)
-            otp_obj = OTPModel.generate_otp()
-            global your_otp 
-            your_otp = otp_obj.otp
-            print(f' Your OTP is: {your_otp}')  # For development, print OTP to the console
-            request.session['otp_id'] = otp_obj.id        
-            return redirect('otp_verify')
-            # login(request, user_b4_otp)
-            # return HttpResponseRedirect(reverse('index'))
+      
         if user_b4_otp is not None:
             # login(request, user)
             otp_obj = OTPModel.generate_otp()
@@ -59,28 +48,6 @@ def login_view(request):
             })
     else:
         return render(request, "smvs/login.html")
-
-
-
-def otp_verify_view(request):
-    if request.method == 'POST':
-        otp = request.POST.getlist('otp')
-        otp_str=''
-        for i in otp:
-            otp_str +=i
-        otp=int(otp_str)
-        otp_id = request.session.get('otp_id')
-        otp_obj = OTPModel.objects.filter(id=otp_id, otp=otp).first()
-        if otp_obj:
-            otp_obj.delete()
-            login(request, user_b4_otp)
-            return HttpResponseRedirect(reverse('index'))
-        else:
-            messages.error(request, 'Invalid OTP or OTP expired.')
-    context = {
-        'your_otp': your_otp,
-    }
-    return render(request, 'smvs/otp_verify.html', context)
 
 
 

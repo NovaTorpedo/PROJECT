@@ -151,26 +151,7 @@
       </div>
     {% endif %}
 
-    <div class="container mt-4">
-      <h1 class="bg-success">OTP Verification</h1>
-      <form method="post">
-        {% csrf_token %}
-        <div class="otp-input-container">
-          {% for _ in '------' %}
-            <input type="text" class="otp-input" name="otp" maxlength="1" required>
-          {% endfor %}
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-      <div>
-        <p class="w3-text-red"> For Testing purposes , you can use the following OTP:<br/>
-          Since we don't have an SMTP server.
-        </p>
-
-      <P>Your otp is:{{your_otp}}</p>
-      </div>
-    </div>
-
+    
     <script src="{% static 'smvs/index.js' %}"></script>
   </body>
 </html>
