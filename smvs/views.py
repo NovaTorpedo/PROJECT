@@ -62,25 +62,6 @@ def login_view(request):
 
 
 
-def otp_verify_view(request):
-    if request.method == 'POST':
-        otp = request.POST.getlist('otp')
-        otp_str=''
-        for i in otp:
-            otp_str +=i
-        otp=int(otp_str)
-        otp_id = request.session.get('otp_id')
-        otp_obj = OTPModel.objects.filter(id=otp_id, otp=otp).first()
-        if otp_obj:
-            otp_obj.delete()
-            login(request, user_b4_otp)
-            return HttpResponseRedirect(reverse('index'))
-        else:
-            messages.error(request, 'Invalid OTP or OTP expired.')
-    context = {
-        'your_otp': your_otp,
-    }
-    return render(request, 'smvs/otp_verify.html', context)
 
 
 
