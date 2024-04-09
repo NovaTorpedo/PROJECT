@@ -1,9 +1,10 @@
 {% extends 'smvs/layout.html' %}
 
 {% block body %}
-
-<div class="container w3-card-4">
-<form method="post" action="{% url 'createCandidate' %}" enctype="multipart/form-data" class="mt-2">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+<form method="post" action="{% url 'createCandidate' %}" enctype="multipart/form-data" class="mt-2 w3-card-4">
     <a href="{% url 'index' %}" class="btn btn-secondary mb-4">
         <i class="fa fa-arrow-left "></i> Back
     </a>
@@ -36,13 +37,16 @@
         <input type="text" id="id_party_affiliation" class="form-control mt-3" name="party_affiliation" required>
     </div>
     <div>
-        <label for="id_profile_picture">Profile Picture:</label>
-        <input type="file" id="id_profile_picture" class="form-control mt-3" name="profile_picture" required>
+        <label for="id_profile_picture" >Profile Picture:</label>
+        <input type="file" id="id_profile_picture" class="form-control mt-3 w3-btn" name="profile_picture" required>
     </div>
     <di class="d-flex justify-content-center">
-    <input type="submit" value="Add Candidate" class="bg-success mt-5 mb-5 btn  w3-xxlarge ">
+    <input type="submit" value="Add Candidate" class="w3-green w3-xxround mt-5 mb-5 w3-btn  w3-xlarge ">
     </di>
 </form>
+</div>
+</div>
+</div>
 
 </div>
 {% endblock %}
