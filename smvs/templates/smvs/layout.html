@@ -67,7 +67,13 @@
             <li class="nav-item">
               <strong class="navbar-text mr-3 w3-text-red"> Not Signed in </strong>
             </li>
-            {% endif %} {% if user.is_authenticated %}
+            {% endif %}
+            {% if user.is_authenticated and user.is_superuser %}
+            <li class="nav-item">
+              <a href="{% url 'register'%}" class="nav-link">Register</a>
+            </li>
+            {% endif %}
+             {% if user.is_authenticated %}
             <li class="nav-item">
               <a href="{% url 'logout'%}" class="nav-link bg-danger w3-btn"
                 >Sign Out</a
@@ -78,9 +84,6 @@
               <a href="{% url 'login'%}" class="nav-link bg-success w3-btn"
                 >Log In</a
               >
-            </li>
-            <li class="nav-item">
-              <a href="{% url 'register'%}" class="nav-link">Register</a>
             </li>
             {% endif %}
           </ul>

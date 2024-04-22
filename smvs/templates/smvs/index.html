@@ -81,11 +81,14 @@
         <form action="{% url 'join_election' %}" method="post" class="text-center">
             {% csrf_token %}
             <div class="form-group">
+                <p>Enter The Election Code to Participate in the Election</p>
                 <input autofocus class="form-control" type="text" name="code" placeholder="Enter Election Code">
                 <input class="btn btn-primary mt-3" type="submit" value="Join Election">
+                {% if user.is_authenticated and user.is_superuser %}
                 <a href="{% url 'voting_statistics' %}">
                     <input id="stats" class="btn btn-primary mt-3 rounded-pill px-4" type="button" value="View Statistics">
                 </a>
+                {% endif %}
             </div>
         </form>
     {% else %}
@@ -93,7 +96,7 @@
         <div>
             <h1>Make Your Vote Count</h1>
            
-            <p>Stay connected and collaborate with friends, family, and colleagues no matter where you are.</p>
+            <p>A voting website designed to facilitate the process of casting and tallying votes easier for you</p>
             <form method="get" action="{% url 'login' %}">
                 <button type="submit" class="btn btn-primary btn-lg rounded-pill px-4">Log In</button>
             </form>

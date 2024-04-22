@@ -25,6 +25,13 @@ SECRET_KEY = 'django-insecure-ni0md0#jwb#5un$&zcsmvr%yes+$t%lfkyb(lh)*s-0g2be-u2
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# Email Settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = '' # Your mail address
+EMAIL_HOST_PASSWORD = '' #Your mail app password
 
 ALLOWED_HOSTS = []
 
@@ -75,24 +82,24 @@ WSGI_APPLICATION = 'PROJECT.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'your table name in the database',
-#         'USER': 'your username',
-#         'PASSWORD': 'your password',
-#         'HOST': 'localhost',  # or the hostname where your MySQL server is running
-#         'PORT': '',      # or the port on which your MySQL server is listening
-#     }
-# }
-
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+     'default': {
+         'ENGINE': 'django.db.backends.mysql',
+         'NAME': 'smvs',
+         'USER': 'root',
+         'PASSWORD': 'Jay21541',
+         'HOST': 'localhost',  # or the hostname where your MySQL server is running
+         'PORT': '3306',      # or the port on which your MySQL server is listening
+     }
+ }
+
+
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+#}
 
 
 AUTH_USER_MODEL = 'smvs.User'

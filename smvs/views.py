@@ -17,6 +17,8 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.contrib import messages
 from django.template import loader
+from django.core.mail import send_mail
+from django.conf import settings
 
 # Create your views here.
 def index(request):
@@ -34,10 +36,16 @@ def login_view(request):
       
         if user_b4_otp is not None:
             # login(request, user)
+            email = user_b4_otp.email
             otp_obj = OTPModel.generate_otp()
             global your_otp 
             your_otp = otp_obj.otp
-            print(f' Your OTP is: {your_otp}')  # For development, print OTP to the console
+            subject = 'OTP Code'
+            message = f'This is Your OTP Code {your_otp}'
+            from_email = '' # Your email address
+            recipient_list = [f'{email}']
+            send_mail(subject, message, from_email, recipient_list)
+            print(f' Your OTP has been sent to your Email')  # For development, print OTP to the console
             request.session['otp_id'] = otp_obj.id        
             return redirect('otp_verify')
             # login(request, user_b4_otp)
